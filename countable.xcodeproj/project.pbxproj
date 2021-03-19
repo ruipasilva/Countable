@@ -11,6 +11,10 @@
 		69020F0D25F3B58100C8639A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69020F0C25F3B58100C8639A /* MainView.swift */; };
 		69020F0F25F3B58400C8639A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69020F0E25F3B58400C8639A /* Assets.xcassets */; };
 		69020F1225F3B58400C8639A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69020F1125F3B58400C8639A /* Preview Assets.xcassets */; };
+		69020F5525FACCA200C8639A /* Color-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69020F5425FACCA200C8639A /* Color-Extension.swift */; };
+		69020F5825FACD3600C8639A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69020F5725FACD3600C8639A /* SettingsView.swift */; };
+		69020F5D25FACF9E00C8639A /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69020F5C25FACF9E00C8639A /* Counter.swift */; };
+		69E9B5F72603B32D0042A50A /* CounterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E9B5F62603B32D0042A50A /* CounterButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +24,10 @@
 		69020F0E25F3B58400C8639A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69020F1125F3B58400C8639A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		69020F1325F3B58400C8639A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		69020F5425FACCA200C8639A /* Color-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Extension.swift"; sourceTree = "<group>"; };
+		69020F5725FACD3600C8639A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		69020F5C25FACF9E00C8639A /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		69E9B5F62603B32D0042A50A /* CounterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +61,11 @@
 			isa = PBXGroup;
 			children = (
 				69020F0A25F3B58100C8639A /* countableApp.swift */,
+				69020F5C25FACF9E00C8639A /* Counter.swift */,
+				69020F5425FACCA200C8639A /* Color-Extension.swift */,
 				69020F0C25F3B58100C8639A /* MainView.swift */,
+				69E9B5F62603B32D0042A50A /* CounterButton.swift */,
+				69020F5725FACD3600C8639A /* SettingsView.swift */,
 				69020F0E25F3B58400C8639A /* Assets.xcassets */,
 				69020F1325F3B58400C8639A /* Info.plist */,
 				69020F1025F3B58400C8639A /* Preview Content */,
@@ -138,7 +150,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69020F5D25FACF9E00C8639A /* Counter.swift in Sources */,
 				69020F0D25F3B58100C8639A /* MainView.swift in Sources */,
+				69020F5825FACD3600C8639A /* SettingsView.swift in Sources */,
+				69020F5525FACCA200C8639A /* Color-Extension.swift in Sources */,
+				69E9B5F72603B32D0042A50A /* CounterButton.swift in Sources */,
 				69020F0B25F3B58100C8639A /* countableApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,6 +284,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"countable/Preview Content\"";
 				DEVELOPMENT_TEAM = 9FVDFCLP22;
 				ENABLE_PREVIEWS = YES;
@@ -280,7 +297,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuiSilva.countable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -290,6 +307,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"countable/Preview Content\"";
 				DEVELOPMENT_TEAM = 9FVDFCLP22;
 				ENABLE_PREVIEWS = YES;
@@ -302,7 +320,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.RuiSilva.countable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

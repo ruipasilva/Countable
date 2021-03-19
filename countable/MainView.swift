@@ -9,24 +9,78 @@ import SwiftUI
 import CoreHaptics
 
 struct MainView: View {
-    
-    @AppStorage("counter") var counter: Int = 0
-    
+
     @State private var engine: CHHapticEngine?
-    
     @State private var fontSize: CGFloat = 170
+    @State private var isShowingSettings = false
+    
+    @ObservedObject var counter: Counter
+    
+    @AppStorage("colorTheme") var colorTheme = Color.mainTheme 
+    
+    
+    var settingsButton: some View {
+            Button(action: {
+                isShowingSettings.toggle()
+            }, label: {
+                Image(systemName: "gearshape.fill")
+            })
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(colorTheme)
+                .frame(width: 46, height: 46)
+                .background(colorTheme.opacity(0.1))
+                .cornerRadius(40)
+    }
     
     var resetButton: some View {
-        Text("Reset")
-            .font(.system(size: 18, weight: .bold, design: .rounded))
-            .foregroundColor(Color("Tint"))
-            .frame(width: 90, height: 46)
-            .background(Color("Tint").opacity(0.1))
-            .cornerRadius(40)
+        VStack {
+            Button("Reset") {
+                counter.counter = 0
+                complexSuccess()
+                
+                print(counter.counter)
+                print(counter.visitorLimit)
+                print(counter.areVisitorsLimited)
+            }
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(colorTheme)
+                .frame(width: 90, height: 46)
+                .background(colorTheme.opacity(0.1))
+                .cornerRadius(40)
+        }
+    }
+    
+    var limitReached: some View {
+        VStack {
+            Text("Reached Visitors Limit")
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(Color.systemRed)
+                .background(Color.systemRed.opacity(0.1))
+                .cornerRadius(40)
+        }.animation(.default)
+    }
+    
+    var tooManyVisitorsText: Text {
+        Text("\(counter.counter - counter.visitorLimit)")
+            .bold()
+    }
+    
+    var tooManyVisitors: some View {
+        VStack {
+            Text("\(tooManyVisitorsText) visitors over the limit")
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(Color.systemRed)
+                .background(Color.systemRed.opacity(0.1))
+                .cornerRadius(40)
+        }
     }
     
     var counterNumberDisabled: some View {
-        Text("\(counter)")
+        Text("\(counter.counter)")
             .font(.system(size: fontSize, weight: .light, design: .rounded))
             .foregroundColor(Color("disabled"))
             .padding(.bottom, 50)
@@ -34,9 +88,9 @@ struct MainView: View {
     }
     
     var counterNumberEnabled: some View {
-        Text("\(counter)")
+        Text("\(counter.counter)")
             .font(.system(size: fontSize, weight: .light, design: .rounded))
-            .padding(.bottom, 50)
+            
             .padding(.horizontal)
             .minimumScaleFactor(0.01)
             .lineLimit(1)
@@ -45,30 +99,30 @@ struct MainView: View {
     var body: some View {
         VStack {
             HStack {
+                settingsButton
                 Spacer()
-                Button {
-                    counter = 0
-                    complexSuccess()
-                } label: {
-                    resetButton
-                }
-                .buttonStyle(CounterButtonStyle())
-                .padding(.top, 5)
+                resetButton
             }
             Spacer()
-            if counter == 0 {
+            if counter.counter == 0 {
                 counterNumberDisabled
+            } else if counter.counter == counter.visitorLimit && counter.areVisitorsLimited {
+                limitReached
+                counterNumberEnabled
+            } else if counter.counter > counter.visitorLimit && counter.areVisitorsLimited {
+                tooManyVisitors
+                counterNumberEnabled
             } else {
                 counterNumberEnabled
             }
             Spacer()
             HStack(alignment: .center) {
-                if counter == 0 {
+                if counter.counter == 0 {
                     Button {
                         complexSuccess()
-                        counter -= 1
+                        counter.counter -= 1
                     } label : {
-                        CounterButton(action: "minus", buttonColor: "disabled", buttonOpacity: 0.6)
+                        CounterButton(action: "minus", buttonColor: Color("disabled"), buttonOpacity: 0.6)
                             .foregroundColor(Color("disable"))
                     }
                     .buttonStyle(CounterButtonStyle())
@@ -76,28 +130,32 @@ struct MainView: View {
                 } else {
                     Button {
                         complexSuccess()
-                        counter -= 1
+                        counter.counter -= 1
                     } label: {
-                        CounterButton(action: "minus", buttonColor: "Tint", buttonOpacity: 1)
+                        CounterButton(action: "minus", buttonColor: colorTheme, buttonOpacity: 1)
                     }
                     .buttonStyle(CounterButtonStyle())
                 }
                 Spacer()
                 Button{
                     complexSuccess()
-                    counter += 1
+                    counter.counter += 1
+                    print(counter.counter)
                 } label: {
-                    CounterButton(action: "plus", buttonColor: "Tint", buttonOpacity: 1)
+                    CounterButton(action: "plus", buttonColor: colorTheme, buttonOpacity: 1)
                 }
                 .buttonStyle(CounterButtonStyle())
                 
+                
             }
             .padding(.bottom, -10)
-            
         }.padding(.horizontal)
         .onAppear(perform: {
             prepareHaptics()
         })
+        .sheet(isPresented: $isShowingSettings) {
+            SettingsView(counter: counter, color: Color.mainTheme)
+        }
     }
     
     func simpleSuccess() {
@@ -107,7 +165,6 @@ struct MainView: View {
     
     func prepareHaptics() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        
         do {
             self.engine = try CHHapticEngine()
             try engine?.start()
@@ -115,7 +172,6 @@ struct MainView: View {
             print("There was an error creating the engine: \(error.localizedDescription)")
         }
     }
-    
     func complexSuccess() {
         // make sure that the device supports haptics
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
@@ -140,42 +196,7 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
-    }
-}
-
-struct CounterButton: View {
-    
-    var action: String
-    var buttonColor: String
-    var buttonOpacity: Double 
-    var isPressed = true
-  
-    var body: some View {
-        ZStack(alignment: .center) {
-            Rectangle()
-                .frame(width: buttonWidth(), height: buttonWidth())
-                .foregroundColor(Color(buttonColor))
-                .cornerRadius(10)
-            Image(systemName: action)
-                .font(.system(size: 42, weight: .regular, design: .rounded))
-                .foregroundColor(.white)
-        }
-        .opacity(buttonOpacity)
-        .padding(.bottom)
-    }
-    func buttonWidth() -> CGFloat {
-        return (UIScreen.main.bounds.width) / 2.3
-    }
-}
-
-struct CounterButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-//            .animation(.easeIn(duration: 0.3))
-            .animation(.easeOut(duration: 0.2))
-            
+        MainView(counter: Counter())
     }
 }
 
