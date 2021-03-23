@@ -9,7 +9,7 @@
 
 Countr is my first app on AppStore. - it's a very simple app for a very specific use case.
 
-Just like [Taskable](https://github.com/ruipasilva/Taskable), I've developed this app thinking of the daily routine I've got in store (I'm a retail manager). With Covid-19 most if not all stores were forced to control their traffic, we currently used a completely outdated app designed pre iOS7, so I wanted to create something more pleasing, appeling to the eye and really easy to use.
+Just like [Taskable](https://github.com/ruipasilva/Taskable), I've developed this app thinking of the daily routine I've got in store (I'm a retail manager). With Covid-19 most, if not all, stores were forced to control their traffic, we currently use a completely outdated app designed pre iOS7, so I wanted to create something more pleasing, appeling to the eye and really easy to use. 
 
 Currently developing v1.1
 
