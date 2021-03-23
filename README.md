@@ -29,4 +29,4 @@ Reset count to 0 | Limit visitors
 
 ## Contact
 
-Please Visit ruisilva.xyz to reach out.
+Please Visit http://www.ruisilva.xyz to reach out.
