@@ -28,6 +28,7 @@ struct CounterButton: View {
         .opacity(buttonOpacity)
         .padding(.bottom)
     }
+    
     func buttonWidth() -> CGFloat {
         return (UIScreen.main.bounds.width) / 2.3
     }

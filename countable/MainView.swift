@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreHaptics
+import UserNotifications
 
 struct MainView: View {
 
@@ -16,9 +17,6 @@ struct MainView: View {
     
     @ObservedObject var counter: Counter
     
-    @AppStorage("colorTheme") var colorTheme = Color.mainTheme 
-    
-    
     var settingsButton: some View {
             Button(action: {
                 isShowingSettings.toggle()
@@ -26,40 +24,40 @@ struct MainView: View {
                 Image(systemName: "gearshape.fill")
             })
                 .font(.system(size: 18, weight: .bold, design: .rounded))
-                .foregroundColor(colorTheme)
+                .foregroundColor(Color("\(counter.colorTheme)"))
                 .frame(width: 46, height: 46)
-                .background(colorTheme.opacity(0.1))
+                .background(Color("\(counter.colorTheme)").opacity(0.1))
                 .cornerRadius(40)
     }
     
     var resetButton: some View {
-        VStack {
             Button("Reset") {
                 counter.counter = 0
                 complexSuccess()
-                
-                print(counter.counter)
-                print(counter.visitorLimit)
-                print(counter.areVisitorsLimited)
             }
                 .font(.system(size: 18, weight: .bold, design: .rounded))
-                .foregroundColor(colorTheme)
+                .foregroundColor(Color("\(counter.colorTheme)"))
                 .frame(width: 90, height: 46)
-                .background(colorTheme.opacity(0.1))
+                .background(Color("\(counter.colorTheme)").opacity(0.1))
                 .cornerRadius(40)
-        }
     }
     
     var limitReached: some View {
-        VStack {
             Text("Reached Visitors Limit")
-                .padding(.vertical, 8)
-                .padding(.horizontal)
-                .font(.system(size: 18, weight: .bold, design: .rounded))
-                .foregroundColor(Color.systemRed)
-                .background(Color.systemRed.opacity(0.1))
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .foregroundColor(Color("Red"))
+                    .background(Color("Red").opacity(0.1))
                 .cornerRadius(40)
-        }.animation(.default)
+    }
+    var invisibleView: some View {
+        Text("")
+            .padding(.vertical, 8)
+            .padding(.horizontal)
+            .font(.system(size: 18, weight: .bold, design: .rounded))
+            
+        .cornerRadius(40)
     }
     
     var tooManyVisitorsText: Text {
@@ -68,15 +66,13 @@ struct MainView: View {
     }
     
     var tooManyVisitors: some View {
-        VStack {
             Text("\(tooManyVisitorsText) visitors over the limit")
                 .padding(.vertical, 8)
                 .padding(.horizontal)
                 .font(.system(size: 18, weight: .bold, design: .rounded))
-                .foregroundColor(Color.systemRed)
-                .background(Color.systemRed.opacity(0.1))
+                .foregroundColor(Color("Red"))
+                .background(Color("Red").opacity(0.1))
                 .cornerRadius(40)
-        }
     }
     
     var counterNumberDisabled: some View {
@@ -90,7 +86,7 @@ struct MainView: View {
     var counterNumberEnabled: some View {
         Text("\(counter.counter)")
             .font(.system(size: fontSize, weight: .light, design: .rounded))
-            
+            .padding(.bottom, 50)
             .padding(.horizontal)
             .minimumScaleFactor(0.01)
             .lineLimit(1)
@@ -105,6 +101,7 @@ struct MainView: View {
             }
             Spacer()
             if counter.counter == 0 {
+                invisibleView
                 counterNumberDisabled
             } else if counter.counter == counter.visitorLimit && counter.areVisitorsLimited {
                 limitReached
@@ -113,6 +110,7 @@ struct MainView: View {
                 tooManyVisitors
                 counterNumberEnabled
             } else {
+                invisibleView
                 counterNumberEnabled
             }
             Spacer()
@@ -132,7 +130,7 @@ struct MainView: View {
                         complexSuccess()
                         counter.counter -= 1
                     } label: {
-                        CounterButton(action: "minus", buttonColor: colorTheme, buttonOpacity: 1)
+                        CounterButton(action: "minus", buttonColor: Color("\(counter.colorTheme)"), buttonOpacity: 1)
                     }
                     .buttonStyle(CounterButtonStyle())
                 }
@@ -140,9 +138,8 @@ struct MainView: View {
                 Button{
                     complexSuccess()
                     counter.counter += 1
-                    print(counter.counter)
                 } label: {
-                    CounterButton(action: "plus", buttonColor: colorTheme, buttonOpacity: 1)
+                    CounterButton(action: "plus", buttonColor: Color("\(counter.colorTheme)"), buttonOpacity: 1)
                 }
                 .buttonStyle(CounterButtonStyle())
                 
@@ -154,7 +151,7 @@ struct MainView: View {
             prepareHaptics()
         })
         .sheet(isPresented: $isShowingSettings) {
-            SettingsView(counter: counter, color: Color.mainTheme)
+            SettingsView(counter: counter)
         }
     }
     

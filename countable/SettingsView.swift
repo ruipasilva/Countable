@@ -9,86 +9,102 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @State private var showsPicker = false
     
     @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var counter: Counter
     
-    @AppStorage("colorTheme") var colorTheme = Color.mainTheme
-    
-    var color: Color
-    
-    
     let colorColumns = [
-        GridItem(.adaptive(minimum: 48))
+        GridItem(.adaptive(minimum: 52))
     ]
+    
+    var limitBody: some View {
+        VStack {
+            HStack {
+                Text("Limit")
+                Spacer()
+                Text("\(counter.visitorLimit)")
+                    .foregroundColor(Color("\(counter.colorTheme)"))
+                    .padding(.trailing,4)
+            }
+            .contentShape(Rectangle())
+            .animation(nil)
+            .onTapGesture {
+                showsPicker.toggle()
+            }
+        }
+    }
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
                     Toggle("Set Visitors Limit", isOn: $counter.areVisitorsLimited.animation())
-                        
-                    .onTapGesture {
-                        print(counter.areVisitorsLimited)
-                    }
-                    .accentColor(Color("Tint"))
                     
                     if counter.areVisitorsLimited {
-                        Section {
-                            HStack {
-                                Text("Limit")
-                            Picker(selection: $counter.visitorLimit, label: Text("Limit")) {
-                                ForEach(0..<1000) { number in
-                                    Text("\(number)")
-                                }
+                        limitBody
+                            .animation(.default)
+                        
+                        
+                        CollapsableWheelPicker(
+                            "",
+                            showsPicker: $showsPicker,
+                            selection: $counter.visitorLimit
+                        ) {
+                            ForEach(0..<1000) { number in
+                                Text("\(number)")
+                                
                             }
-                            .pickerStyle(WheelPickerStyle())
-                            .frame(maxWidth: .infinity)
-                        }
                         }
                     }
                 }
-                Section(header: Text("Select color").bold()) {
+                Section(header: Text("Theme")) {
                     LazyVGrid(columns: colorColumns) {
                         ForEach(Counter.colors, id: \.self) { item in
                             colorButton(for: item)
+                                .padding(4)
                         }
+                        
                     }
+                    .padding(.top, 10)
+                    .padding(.bottom, 10)
+                    
                 }
-                .padding()
+                
             }
-            //            .background(Color.systemGroupedBackground)
             .navigationBarTitle("Settings", displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Done") {
                                         presentationMode.wrappedValue.dismiss()
                                     })
-        }.accentColor(colorTheme)
+        }.accentColor(Color("\(counter.colorTheme)"))
     }
     
-    func colorButton(for item: Color) -> some View {
+    func colorButton(for item: String) -> some View {
         ZStack {
             Circle()
-                .foregroundColor(item)
-                .aspectRatio(1, contentMode: .fill)
+                .foregroundColor(Color("\(item)"))
+                .aspectRatio(1, contentMode: .fit)
                 .cornerRadius(10)
             
-            if item == colorTheme {
-                Image(systemName: "checkmark.circle")
+            if item == counter.colorTheme {
+                Image(systemName: "checkmark")
+                    .font(.title3)
                     .foregroundColor(.white)
-                    .font(.largeTitle)
+                    
             }
         }
         .onTapGesture {
-
-            colorTheme = item
+            counter.colorTheme = item
         }
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(counter: Counter(), color: Color.mainTheme)
+        SettingsView(counter: Counter())
     }
 }
+
+
