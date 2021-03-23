@@ -20,12 +20,14 @@ Reset count to 0 | Limit visitors
 "" | Change app theme
 "" | Visitors limit warning
 "" | Display how many visitors over the limit
+"" | High Contrast profile colors
 
 
 ## Technologies
 
 * SwiftUI
 * Core Haptics
+* Fully Supports Dark Mode
 
 ## Contact
 
