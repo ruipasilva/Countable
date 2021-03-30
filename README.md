@@ -15,7 +15,7 @@ Download it and test it from the [App Store](https://apps.apple.com/gb/app/count
 
 Currently developing v1.1
 
-Version 1.0 | Version 1.1 (coming soon)
+Version 1.0 | Version 1.1
 ------------ | -------------
 Tally up number of visitors | Settings added
 Reset count to 0 | Limit visitors
