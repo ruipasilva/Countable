@@ -60,9 +60,8 @@ struct MainView: View {
         .cornerRadius(40)
     }
     
-    var tooManyVisitorsText: Text {
-        Text("\(counter.counter - counter.visitorLimit)")
-            .bold()
+    var tooManyVisitorsText: Int {
+        counter.counter - counter.visitorLimit
     }
     
     var tooManyVisitors: some View {
@@ -142,8 +141,6 @@ struct MainView: View {
                     CounterButton(action: "plus", buttonColor: Color("\(counter.colorTheme)"), buttonOpacity: 1)
                 }
                 .buttonStyle(CounterButtonStyle())
-                
-                
             }
             .padding(.bottom, -10)
         }.padding(.horizontal)
@@ -169,6 +166,7 @@ struct MainView: View {
             print("There was an error creating the engine: \(error.localizedDescription)")
         }
     }
+    
     func complexSuccess() {
         // make sure that the device supports haptics
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
